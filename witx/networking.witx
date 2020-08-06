@@ -1,0 +1,122 @@
+(use "typenames.witx")
+
+;;; This is a rough sketch of low-level networking API in WASI. It is
+;;; designed to natively support multiplexing (for protocols like
+;;; QUIC) where each stream can be initiated from both server and
+;;; client sides, within a single connection.
+;;;
+;;; Below are the typical flows of the API calls.
+;;;
+;;; For a multiplexing server:
+;;;
+;;; 1. open(protocol_fd, "[::1]:8888", socket_stream, ...) -> control_fd
+;;; 2. listen(control_fd, 0) -> 0
+;;; 3. [possible polling on control_fd]
+;;; 4. accept(control_fd, 0) -> connection_fd
+;;; 5. stream_accept(connection_fd) -> fd1
+;;; 6. read/write on fd1
+;;; 7. stream_create(connection_fd) -> fd2
+;;; 8. read/write on fd2
+;;;
+;;; and for the client:
+;;;
+;;; 1. open(protocol_fd, "[::]:0", socket_stream, ...) -> control_fd
+;;; 2. connect(control_fd, "[::1]:8888", ...) -> connection_fd
+;;; 3. [possible polling on control_fd]
+;;; 4. stream_create(connection_fd) -> fd1
+;;; 5. read/write on fd1
+;;; 6. stream_accept(connection_fd) -> fd2
+;;; 7. read/write on fd2
+
+;;; The control file descriptor used for controlling the socket behavior.
+(typename $controlfd $fd)
+
+;;; The file descriptor representing a network connection.
+(typename $connectionfd $fd)
+
+;;; The file descriptor representing a communication stream within a connection.
+(typename $streamfd $fd)
+
+;;; `filetype` already has `socket_dgram` and `socket_stream`.
+(typename $sockettype $filetype)
+
+(module $networking
+  (import "memory" (memory))
+
+  ;;; Open a networking socket.
+  ;;; Note: This is similar to `socket` and `bind` in POSIX.
+  (@interface func (export "open")
+    ;;; The file descriptor that represents a protocol in a
+    ;;; capability-based manner.
+    (param $protocol_fd $fd)
+    ;;; The address assigned to the created socket.
+    (param $bind_address string)
+    (param $type $sockettype)
+    ;;; The initial rights of the newly created file descriptor. The
+    ;;; implementation is allowed to return a file descriptor with fewer rights
+    ;;; than specified, if and only if those rights do not apply to the type of
+    ;;; file being opened.
+    ;;
+    ;;; The *base* rights are rights that will apply to operations using the file
+    ;;; descriptor itself, while the *inheriting* rights are rights that apply to
+    ;;; file descriptors derived from it.
+    (param $rights_base $rights)
+    (param $rights_inherting $rights)
+    (param $fdflags $fdflags)
+    (result $error $errno)
+    ;;; The file descriptor of the socket that has been opened.
+    (result $opened_controlfd $controlfd)
+  )
+
+  ;;; Listen on a network socket.
+  ;;; Note: This is similar to `listen` in POSIX.
+  (@interface func (export "listen")
+    (param $controlfd $controlfd)
+    ;;; The maximum length to which the pending connections may grow.
+    (param $backlog $size)
+    (result $error $errno)
+  )
+
+  ;;; Accept an incoming connection.
+  ;;;
+  ;;; Note: This is similar to `accept` in POSIX, but the file
+  ;;; descriptor is not immediately usable for reading/writing until
+  ;;; `stream_create` or `stream_accept` is called.
+  (@interface func (export "accept")
+    (param $controlfd $controlfd)
+    (result $error $errno)
+    (result $opened_connectionfd $connectionfd)
+  )
+
+  ;;; Connect a network socket to an external address.
+  ;;;
+  ;;; Note: This is similar to `connect` in POSIX, but the file
+  ;;; descriptor is not immediately usable for reading/writing until
+  ;;; `stream_create` or `stream_accept` is called.
+  (@interface func (export "connect")
+    (param $controlfd $controlfd)
+    ;;; The destination address.
+    (param $address string)
+    (result $error $errno)
+    (result $opened_connectionfd $connectionfd)
+  )
+
+  ;;; Create a stream for communication and request the remote peer to
+  ;;; accept it.
+  (@interface func (export "stream_create")
+    (param $connectionfd $connectionfd)
+    (param $rights $rights)
+    (param $fdflags $fdflags)
+    (result $error $errno)
+    ;;; The file descriptor of the stream that has been opened.
+    (result $opened_streamfd $streamfd)
+  )
+
+  ;;; Accept an incoming stream from the remote peer.
+  (@interface func (export "stream_accept")
+    (param $connectionfd $connectionfd)
+    (result $error $errno)
+    ;;; The file descriptor of the stream that has been opened.
+    (result $opened_streamfd $streamfd)
+  )
+)
