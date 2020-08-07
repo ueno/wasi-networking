@@ -16,19 +16,19 @@ Below are the typical flows of the API calls.
 
 For a server:
 
-1. Create a `control_fd`: `open(protocol_fd, "[::1]:8888", socket_stream, ...)`
-2. Listen: `listen(control_fd, 0)`
-3. [possible polling on `control_fd`]
-4. Accept a connection: `accept(control_fd)`
-5. Accept a stream: `stream_accept(connection_fd)`
-6. [read/write on `stream_fd`]
+1. Create `control_fd` and bind it to a listening address: `open(protocol_fd, "[::1]:8888", socket_stream, ...) -> control_fd`
+2. Listen on `control_fd`: `listen(control_fd, 0) -> 0`
+3. possible polling on `control_fd`
+4. Accept an incoming connection: `accept(control_fd) -> connection_fd`
+5. Accept a stream: `stream_accept(connection_fd) -> stream_fd`
+6. read/write on `stream_fd`
 
 and for the client:
 
-1. Create a `control_fd`: `open(protocol_fd, "[::]:0", socket_stream, ...)`
-2. Connect: `connect(control_fd, "[::1]:8888", ...)`
-3. Create a stream: `stream_create(connection_fd)`
-5. [read/write on `stream_fd`]
+1. Create `control_fd` and bind it to an address (any): `open(protocol_fd, "[::]:0", socket_stream, ...) -> control_fd`
+2. Connect to a remote peer through `control_fd`: `connect(control_fd, "[::1]:8888", ...) -> connection_fd`
+3. Create a stream: `stream_create(connection_fd) -> stream_fd`
+5. read/write on `stream_fd`
 
 A protocol object (`protocol_fd`), which the host provides with the
 guest, serves as a factory of connections/streams as well as a sandbox
