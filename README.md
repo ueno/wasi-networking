@@ -43,10 +43,12 @@ underlying protocol object supports it.
 
 ## Prior art
 
-The multiplexing model is conceptually similar to
-[STREAMS]. [CloudABI]'s socket API is also relevant to the
-capability-oriented API, while it pre-opens the connections
-themselves.
+While some of the API functions (`listen`, `connect`) are borrowed
+from [Berkeley sockets], the multiplexing model is conceptually
+similar to [STREAMS]. [CloudABI]'s socket API is also relevant to
+capability-based security, while it imposes the host to statically
+provide the pre-opened connections with the guest.
 
-[CloudABI]: https://github.com/NuxiNL/cloudabi#capability-based-security
+[Berkeley sockets]: https://en.wikipedia.org/wiki/Berkeley_sockets
 [STREAMS]: https://en.wikipedia.org/wiki/STREAMS
+[CloudABI]: https://github.com/NuxiNL/cloudabi#capability-based-security
