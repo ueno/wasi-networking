@@ -7,7 +7,7 @@ also aiming at:
 - native support for multiplexing for protocols like QUIC
 - connections/streams are dynamically created by a Wasm module
 
-The rendered documentation is [here](/blob/master/docs.md#-networking).
+The rendered documentation is [here](docs.md#-networking).
 
 ## API usage
 
