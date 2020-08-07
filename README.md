@@ -2,11 +2,11 @@
 
 This is a rough sketch of low-level networking API in WASI. It is
 designed to resemble the POSIX networking API as much as possible, but
-also aiming at:
+also aiming to:
 
-- ensuring capability-based security
-- allowing connections/streams to be dynamically created by a Wasm module
-- native support for multiplexing for protocols like QUIC
+- ensure capability-based security
+- allow connections/streams to be dynamically created by a Wasm module itself
+- support multiplexing natively for protocols like QUIC
 
 The rendered documentation is [here](docs.md#-networking).
 
