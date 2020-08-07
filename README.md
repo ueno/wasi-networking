@@ -43,11 +43,11 @@ underlying protocol object supports it.
 
 ## Prior art
 
-While some of the API functions (`listen`, `connect`) are borrowed
-from [Berkeley sockets], the multiplexing model is conceptually
-similar to [STREAMS]. [CloudABI]'s socket API is also relevant to
-capability-based security, while it imposes the host to statically
-provide the pre-opened connections with the guest.
+While some of the API functions (`listen` and `connect`) are borrowed
+from [Berkeley sockets] and POSIX, the multiplexing model is
+conceptually similar to [STREAMS]. [CloudABI]'s socket API is also
+relevant to capability-based security, while it imposes the host to
+statically provide the pre-opened connections with the guest.
 
 [Berkeley sockets]: https://en.wikipedia.org/wiki/Berkeley_sockets
 [STREAMS]: https://en.wikipedia.org/wiki/STREAMS
