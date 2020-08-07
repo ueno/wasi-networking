@@ -1,5 +1,9 @@
 (use "typenames.witx")
 
+;;; The protocol file descriptor used for creating any networking file
+;;; descriptors.
+(typename $protocolfd $fd)
+
 ;;; The control file descriptor used for controlling the socket behavior.
 (typename $controlfd $fd)
 
@@ -20,7 +24,7 @@
   (@interface func (export "open")
     ;;; The file descriptor that represents a protocol in a
     ;;; capability-oriented manner.
-    (param $protocol_fd $fd)
+    (param $protocol_fd $protocolfd)
     ;;; The address assigned to the created socket.
     (param $bind_address string)
     (param $type $sockettype)

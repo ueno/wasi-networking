@@ -1091,6 +1091,13 @@ Alignment: 4
 - <a href="#prestat.dir" name="prestat.dir"></a> `dir`: [`prestat_dir`](#prestat_dir)
 When type is [`preopentype::dir`](#preopentype.dir):
 
+## <a href="#protocolfd" name="protocolfd"></a> `protocolfd`: [`fd`](#fd)
+The protocol file descriptor used for creating any networking file descriptor.
+
+Size: 4
+
+Alignment: 4
+
 ## <a href="#controlfd" name="controlfd"></a> `controlfd`: [`fd`](#fd)
 The control file descriptor used for controlling the socket behavior.
 
@@ -1127,12 +1134,12 @@ Alignment: 1
 
 ---
 
-#### <a href="#open" name="open"></a> `open(protocol_fd: fd, bind_address: string, type: sockettype, rights_base: rights, rights_inherting: rights, fdflags: fdflags) -> (errno, controlfd)`
+#### <a href="#open" name="open"></a> `open(protocol_fd: protocolfd, bind_address: string, type: sockettype, rights_base: rights, rights_inherting: rights, fdflags: fdflags) -> (errno, controlfd)`
 Open a networking socket.
 Note: This is similar to `socket` and `bind` in POSIX.
 
 ##### Params
-- <a href="#open.protocol_fd" name="open.protocol_fd"></a> `protocol_fd`: [`fd`](#fd)
+- <a href="#open.protocol_fd" name="open.protocol_fd"></a> `protocol_fd`: [`protocolfd`](#protocolfd)
 The file descriptor that represents a protocol in a
 capability-oriented manner.
 
