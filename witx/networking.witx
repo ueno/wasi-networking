@@ -1,33 +1,5 @@
 (use "typenames.witx")
 
-;;; This is a rough sketch of low-level networking API in WASI. It is
-;;; designed to natively support multiplexing (for protocols like
-;;; QUIC) where each stream can be initiated from both server and
-;;; client sides, within a single connection.
-;;;
-;;; Below are the typical flows of the API calls.
-;;;
-;;; For a multiplexing server:
-;;;
-;;; 1. open(protocol_fd, "[::1]:8888", socket_stream, ...) -> control_fd
-;;; 2. listen(control_fd, 0) -> 0
-;;; 3. [possible polling on control_fd]
-;;; 4. accept(control_fd, 0) -> connection_fd
-;;; 5. stream_accept(connection_fd) -> fd1
-;;; 6. read/write on fd1
-;;; 7. stream_create(connection_fd) -> fd2
-;;; 8. read/write on fd2
-;;;
-;;; and for the client:
-;;;
-;;; 1. open(protocol_fd, "[::]:0", socket_stream, ...) -> control_fd
-;;; 2. connect(control_fd, "[::1]:8888", ...) -> connection_fd
-;;; 3. [possible polling on control_fd]
-;;; 4. stream_create(connection_fd) -> fd1
-;;; 5. read/write on fd1
-;;; 6. stream_accept(connection_fd) -> fd2
-;;; 7. read/write on fd2
-
 ;;; The control file descriptor used for controlling the socket behavior.
 (typename $controlfd $fd)
 
@@ -47,7 +19,7 @@
   ;;; Note: This is similar to `socket` and `bind` in POSIX.
   (@interface func (export "open")
     ;;; The file descriptor that represents a protocol in a
-    ;;; capability-based manner.
+    ;;; capability-oriented manner.
     (param $protocol_fd $fd)
     ;;; The address assigned to the created socket.
     (param $bind_address string)
