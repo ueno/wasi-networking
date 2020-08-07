@@ -7,6 +7,8 @@ also aiming at:
 - native support for multiplexing for protocols like QUIC
 - connections/streams are dynamically created by a Wasm module
 
+The rendered documentation is [here](blob/master/docs.md#-networking).
+
 ## API usage
 
 Below are the typical flows of the API calls.
@@ -45,5 +47,5 @@ The multiplexing model is conceptually similar to
 capability-oriented API, while it pre-opens the connections
 themselves.
 
-- [CloudABI]: https://github.com/NuxiNL/cloudabi#capability-based-security
-- [STREAMS]: https://en.wikipedia.org/wiki/STREAMS
+[CloudABI]: https://github.com/NuxiNL/cloudabi#capability-based-security
+[STREAMS]: https://en.wikipedia.org/wiki/STREAMS
