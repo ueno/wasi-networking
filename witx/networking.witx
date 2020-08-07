@@ -82,6 +82,7 @@
   (@interface func (export "stream_create")
     (param $connectionfd $connectionfd)
     (param $rights $rights)
+    (param $rights_inherting $rights)
     (param $fdflags $fdflags)
     (result $error $errno)
     ;;; The file descriptor of the stream that has been opened.
