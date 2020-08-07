@@ -1092,7 +1092,8 @@ Alignment: 4
 When type is [`preopentype::dir`](#preopentype.dir):
 
 ## <a href="#protocolfd" name="protocolfd"></a> `protocolfd`: [`fd`](#fd)
-The protocol file descriptor used for creating any networking file descriptor.
+The protocol file descriptor used for creating any networking file
+descriptors.
 
 Size: 4
 
@@ -1225,7 +1226,7 @@ The destination address.
 
 ---
 
-#### <a href="#stream_create" name="stream_create"></a> `stream_create(connectionfd: connectionfd, rights: rights, fdflags: fdflags) -> (errno, streamfd)`
+#### <a href="#stream_create" name="stream_create"></a> `stream_create(connectionfd: connectionfd, rights: rights, rights_inherting: rights, fdflags: fdflags) -> (errno, streamfd)`
 Create a stream for communication and request the remote peer to
 accept it.
 
@@ -1233,6 +1234,8 @@ accept it.
 - <a href="#stream_create.connectionfd" name="stream_create.connectionfd"></a> `connectionfd`: [`connectionfd`](#connectionfd)
 
 - <a href="#stream_create.rights" name="stream_create.rights"></a> `rights`: [`rights`](#rights)
+
+- <a href="#stream_create.rights_inherting" name="stream_create.rights_inherting"></a> `rights_inherting`: [`rights`](#rights)
 
 - <a href="#stream_create.fdflags" name="stream_create.fdflags"></a> `fdflags`: [`fdflags`](#fdflags)
 
