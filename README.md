@@ -17,7 +17,7 @@ Below are the typical flows of the API calls.
 For a server:
 
 1. Create `control_fd` and bind it to a listening address: `open(protocol_fd, "[::1]:8888", socket_stream, ...) -> control_fd`
-2. Listen on `control_fd`: `listen(control_fd, 0) -> 0`
+2. Listen on `control_fd`: `listen(control_fd, 0) -> errno`
 3. possible polling on `control_fd`
 4. Accept an incoming connection: `accept(control_fd) -> connection_fd`
 5. Accept a stream: `stream_accept(connection_fd) -> stream_fd`
@@ -43,11 +43,12 @@ underlying protocol object supports it.
 
 ## Prior art
 
-While some of the API functions (`listen` and `connect`) are borrowed
-from [Berkeley sockets] and POSIX, the multiplexing model is
-conceptually similar to [STREAMS]. [CloudABI]'s socket API is also
-relevant to capability-based security, while it imposes the host to
-statically provide the pre-opened connections with the guest.
+While some of the API functions (`listen`, `accept`, and `connect`;
+`bind` is merged into `open`) are borrowed from [Berkeley sockets] and
+POSIX, the multiplexing model is conceptually similar to
+[STREAMS]. [CloudABI]'s socket API is also relevant to
+capability-based security, while it imposes the host to statically
+provide the pre-opened connections with the guest.
 
 [Berkeley sockets]: https://en.wikipedia.org/wiki/Berkeley_sockets
 [STREAMS]: https://en.wikipedia.org/wiki/STREAMS
