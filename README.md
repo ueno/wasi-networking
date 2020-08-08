@@ -6,6 +6,7 @@ also aiming to:
 
 - ensure capability-based security
 - allow connections/streams to be dynamically created by a Wasm module itself
+- support TLS and proxies transparently
 - support multiplexing natively for protocols like QUIC
 
 The rendered documentation is [here](docs.md#-networking).
